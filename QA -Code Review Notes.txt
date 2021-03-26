@@ -1,0 +1,12 @@
+MarketManager class Code Review
+****************
+1. String comparisons are an issue, TRIM and ToUpper will be necessary.
+2. Use Constants for hard coded values.
+3. remove unecessary iterations.
+4. Exception being thrown include some information of why the exception, add constants for some exception messages
+5. remove uncessary else - place return inside the conditions
+6. remove uncessary variable declaration at the top of the class
+7. Make it implent an interface so that it can be more generic if necessary, this will also allow for testing abstractions such as mocking
+8. Add switch statement, remove if statements to cater for more possible sport options
+9. No Code coverage - implement unit tests for success and fail paths
+

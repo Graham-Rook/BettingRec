@@ -1,40 +1,40 @@
 ﻿using System;
 using System.Linq;
+using SS.Interview.BettingPlatform.Interfaces;
 using SS.Interview.BettingPlatform.MarketGeneration.Generators;
 using SS.Interview.BettingPlatform.MarketGeneration.Models;
 using SS.Interview.BettingPlatform.Requests;
+using SS.Interview.BettingPlatform.Shared;
 
 namespace SS.Interview.BettingPlatform.Managers
 {
-    public class MarketManager
+    public class MarketManager : IMarketManager
     {
+        /// <summary>
+        /// Get Array of Markets
+        /// </summary>
+        /// <param name="request">MarketRequest</param>
+        /// <returns>Market[]</returns>
         public Market[] Get(MarketRequest request)
         {
-            Market[] markets;
+            //validate we have values provided in the request
+            if (string.IsNullOrWhiteSpace(request.Sport))
+                throw new Exception(Constants.Market.Validation.SportMissing);
 
-            if (request.Sport == "FOOTBALL")
-            {
-                var footballGen = new FootballMarketGenerator();
-                return footballGen.GetMarkets(request.Fixture);
-            }
-            else if (request.Sport == "tennis")
-            {
-                var tennisGen = new TennisMarketGenerator();
-                var tennisMarkets = tennisGen.GetMarkets(request.Fixture);
+            if (string.IsNullOrWhiteSpace(request.Fixture))
+                throw new Exception(Constants.Market.Validation.FixtureMissing);
 
-                markets = new Market[tennisMarkets.Count];
-                
-                for (var i = 0; i < tennisMarkets.Count; i++)
-                {
-                    markets[i] = tennisMarkets.Skip(i).Take(1).First();
-                }
-            }
-            else
+            //switch on different sports
+            switch (request.Sport.Trim().ToUpper())
             {
-                throw new Exception();
+                case Constants.Market.Sport.Football:
+                    return new FootballMarketGenerator().GetMarkets(request.Fixture);
+                case Constants.Market.Sport.Tennis:
+                    return new TennisMarketGenerator().GetMarkets(request.Fixture).ToArray();
             }
 
-            return markets;
+            //sport not found
+            throw new Exception(Constants.Market.Validation.SportNotFound);
         }
     }
 }
