@@ -21,8 +21,8 @@ namespace SS.Interview.BettingPlatform.Tests.ClassTests
             { }
         }
 
-        [TestCase(Constants.Market.Sport.Tennis)]
-        [TestCase(Constants.Market.Sport.Football)]
+        [TestCase(Constants.Market.Sport.Tennis, TestName = "Get Success Sport Tennis")]
+        [TestCase(Constants.Market.Sport.Football, TestName = "Get Success Sport Football")]
         public void Get_Success(string sport)
         {
             using var resources = new Resources();
@@ -42,11 +42,11 @@ namespace SS.Interview.BettingPlatform.Tests.ClassTests
             Assert.IsNotEmpty(result);
         }
 
-        [TestCase(null, Constants.Market.Fixture.SomeFixture, Constants.Market.Validation.SportMissing)]
-        [TestCase("", Constants.Market.Fixture.SomeFixture, Constants.Market.Validation.SportMissing)]
-        [TestCase(" ", Constants.Market.Fixture.SomeFixture, Constants.Market.Validation.SportMissing)]
-        [TestCase("Boxing", Constants.Market.Fixture.SomeFixture, Constants.Market.Validation.SportNotFound)]
-        [TestCase(Constants.Market.Sport.Football, null, Constants.Market.Validation.FixtureMissing)]
+        [TestCase(null, Constants.Market.Fixture.SomeFixture, Constants.Market.Validation.SportMissing, TestName ="Get Invalid Sport Null")]
+        [TestCase("", Constants.Market.Fixture.SomeFixture, Constants.Market.Validation.SportMissing, TestName = "Get Invalid Sport Empty")]
+        [TestCase(" ", Constants.Market.Fixture.SomeFixture, Constants.Market.Validation.SportMissing, TestName = "Get Invalid Sport White Space")]
+        [TestCase("Boxing", Constants.Market.Fixture.SomeFixture, Constants.Market.Validation.SportNotFound, TestName = "Get Invalid Sport Not Found")]
+        [TestCase(Constants.Market.Sport.Football, null, Constants.Market.Validation.FixtureMissing, TestName = "Get Invalid Fixture Missing")]
         public void Get_Invalid(string sport, string fixture, string expectedErrorMessage)
         {
             using var resources = new Resources();
